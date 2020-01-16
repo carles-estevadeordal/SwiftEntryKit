@@ -44,8 +44,25 @@ public final class SwiftEntryKit {
     /** Completion handler for the dismissal method */
     public typealias DismissCompletionHandler = () -> Void
     
-    /** Cannot be instantiated, customized, inherited. */
-    private init() {}
+    public static let shared = SwiftEntryKit()
+    
+    let windowProvider = EKWindowProvider()
+
+    public init() {}
+
+    public var isCurrentlyDisplaying: Bool {
+        return isCurrentlyDisplaying()
+    }
+
+    public func isCurrentlyDisplaying(entryNamed name: String? = nil) -> Bool {
+        return windowProvider.isCurrentlyDisplaying(entryNamed: name)
+    }
+
+    public func display(entry view: UIView, using attributes: EKAttributes, presentInsideKeyWindow: Bool = false, rollbackWindow: RollbackWindow = .main) {
+        DispatchQueue.main.async {
+            self.windowProvider.display(view: view, using: attributes, presentInsideKeyWindow: presentInsideKeyWindow, rollbackWindow: rollbackWindow)
+        }
+    }
     
     /**
      Returns the window that displays the entry.

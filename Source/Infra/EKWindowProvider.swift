@@ -8,7 +8,7 @@
 
 import UIKit
 
-final class EKWindowProvider: EntryPresenterDelegate {
+final public class EKWindowProvider: EntryPresenterDelegate {
     
     /** The artificial safe area insets */
     static var safeAreaInsets: UIEdgeInsets {
@@ -40,7 +40,7 @@ final class EKWindowProvider: EntryPresenterDelegate {
     private weak var entryView: EKEntryView!
 
     /** Cannot be instantiated, customized, inherited */
-    private init() {}
+    public init() {}
     
     var isResponsiveToTouches: Bool {
         set {
