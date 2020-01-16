@@ -7,7 +7,7 @@
 
 import UIKit
 
-final public class EKFormMessageView: UIView {
+final public class EKFormMessageView: UIView, UITextFieldDelegate {
     
     private let scrollViewVerticalOffset: CGFloat = 20
     
@@ -51,7 +51,12 @@ final public class EKFormMessageView: UIView {
             scrollView.addSubview(textField)
             textField.tag = textFieldIndex
             textFieldIndex += 1
+            textField.textField.delegate = self
+            textField.textField.returnKeyType = .next
             return textField
+        }
+        if let textField = textFieldViews.last {
+            textField.textField.returnKeyType = .continue
         }
         textFieldViews.first!.layout(.top, to: .bottom, of: titleLabel, offset: 20)
         textFieldViews.spread(.vertically, offset: 5)
@@ -126,5 +131,27 @@ final public class EKFormMessageView: UIView {
     // Tap Gesture
     @objc func tapGestureRecognized() {
         endEditing(true)
+    }
+    
+    public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        var i: Int = 0
+        for tf in textFieldViews {
+            i += 1
+            if tf.textField.isEqual(textField) {
+                break
+            }
+        }
+        
+        if i < textFieldViews.count {
+            let tf = textFieldViews[i]
+            textField.resignFirstResponder()
+            tf.makeFirstResponder()
+        } else if self.buttonBarView.buttonViews.count < 2 {
+            if let buttonView = self.buttonBarView.buttonViews.last {
+                buttonView.buttonTouchUpInside()
+            }
+        }
+        
+        return false
     }
 }

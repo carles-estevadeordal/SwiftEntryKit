@@ -277,6 +277,10 @@ public struct EKProperty {
         public var displayMode: EKAttributes.DisplayMode
         public var bottomBorderColor: EKColor
         public var accessibilityIdentifier: String?
+        
+        public var datePicker: UIDatePicker?
+        public var pickerView: UIPickerView?
+        
         let contentWrapper = ContentWrapper()
         public var textContent: String {
             set {
@@ -295,7 +299,9 @@ public struct EKProperty {
                     isSecure: Bool = false,
                     leadingImage: UIImage? = nil,
                     bottomBorderColor: EKColor = .clear,
-                    accessibilityIdentifier: String? = nil) {
+                    accessibilityIdentifier: String? = nil,
+                    datePicker: UIDatePicker? = nil,
+                    pickerView: UIPickerView? = nil) {
             self.keyboardType = keyboardType
             self.placeholder = placeholder
             self.textStyle = textStyle
@@ -305,6 +311,8 @@ public struct EKProperty {
             self.leadingImage = leadingImage
             self.bottomBorderColor = bottomBorderColor
             self.accessibilityIdentifier = accessibilityIdentifier
+            self.datePicker = datePicker
+            self.pickerView = pickerView
         }
         
         public func tintColor(for traitCollection: UITraitCollection) -> UIColor? {

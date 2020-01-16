@@ -19,7 +19,7 @@ final public class EKButtonBarView: UIView {
     
     // MARK: - Properties
     
-    private var buttonViews: [EKButtonView] = []
+    var buttonViews: [EKButtonView] = []
     private var separatorViews: [UIView] = []
     
     private let buttonBarContent: EKProperty.ButtonBarContent
