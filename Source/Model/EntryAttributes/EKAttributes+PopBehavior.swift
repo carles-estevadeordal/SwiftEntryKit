@@ -22,7 +22,7 @@ public extension EKAttributes {
             switch self {
             case .overridden:
                 return true
-            case .animated:
+            default:
                 return false
             }
         }
