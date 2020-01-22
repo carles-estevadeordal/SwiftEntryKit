@@ -92,6 +92,7 @@ final public class EKTextField: UIView {
     }
 }
 
+//Needs to be here, for some reason it is not beeing imported if it is in a separate file like it should: UITextField+Pickers
 public extension UITextField {
     
     fileprivate struct AssociatedKeys {
@@ -101,7 +102,7 @@ public extension UITextField {
     }
     
     /// The `UIPickerView` for the text field. Set this to configure the `inputView` and `inputAccessoryView` for the text field.
-    var pickerView: UIPickerView? {
+    public var pickerView: UIPickerView? {
         get {
             return self.inputView as? UIPickerView
         }
@@ -111,13 +112,31 @@ public extension UITextField {
     }
     
     /// The `UIDatePicker` for the text field. Set this to configure the `inputView` and `inputAccessoryView` for the text field.
-    var datePicker: UIDatePicker? {
+    public var datePicker: UIDatePicker? {
         get {
             return self.inputView as? UIDatePicker
         }
         set {
             setInputViewToPicker(newValue)
         }
+    }
+    
+    fileprivate func dateFormat() -> String {
+        let dateFormat = NSLocalizedString("SEK_DATE_FORMAT", comment: "Date Format")
+        
+        if dateFormat == "" || dateFormat == "SEK_DATE_FORMAT" {
+            return "YYYY/MM/dd"
+        }
+        return dateFormat
+    }
+    
+    fileprivate func clearButtonText() -> String {
+        let clearButtonText = NSLocalizedString("SEK_CLEAR_BUTTON_TEXT", comment: "Clear Button Text")
+        
+        if clearButtonText == "" || clearButtonText == "SEK_CLEAR_BUTTON_TEXT" {
+            return "Clear"
+        }
+        return clearButtonText
     }
     
     fileprivate func setInputViewToPicker(_ picker: UIView?) {
@@ -170,7 +189,7 @@ public extension UITextField {
                 return formatter
             } else {
                 let formatter = DateFormatter()
-                formatter.dateFormat = "M/d/yy"
+                formatter.dateFormat = self.dateFormat()
                 objc_setAssociatedObject(self, &AssociatedKeys.DateFormatter, formatter, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
                 return formatter
             }
@@ -196,7 +215,7 @@ public extension UITextField {
     /// Defaults to "Clear".
     var clearButtonTitle: String {
         get {
-            return objc_getAssociatedObject(self, &AssociatedKeys.ClearButtonTitle) as? String ?? "Clear"
+            return objc_getAssociatedObject(self, &AssociatedKeys.ClearButtonTitle) as? String ?? self.clearButtonText()
         }
         set {
             objc_setAssociatedObject(self, &AssociatedKeys.ClearButtonTitle, newValue as NSString, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
@@ -221,6 +240,7 @@ public extension UITextField {
         }
         DispatchQueue.main.async(execute: { () -> Void in
             self.sendActions(for: .editingChanged)
+            _ = self.delegate?.textFieldShouldReturn?(self)
         })
         resignFirstResponder()
     }
