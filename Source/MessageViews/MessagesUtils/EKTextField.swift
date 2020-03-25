@@ -121,7 +121,7 @@ public extension UITextField {
         }
     }
     
-    fileprivate func dateFormat() -> String {
+    func dateFormat() -> String {
         let dateFormat = NSLocalizedString("SEK_DATE_FORMAT", comment: "Date Format")
         
         if dateFormat == "" || dateFormat == "SEK_DATE_FORMAT" {
